@@ -17,10 +17,22 @@ class OauthController < ApplicationController
     headers["Cache-Control"] = "no-cache"
     headers["Pragma"] = "no-cache"
 
-    authorization = client_application.authorizations.find_by(:code => params[:code])
-    access_token = authorization.access_tokens.create!
+    case params[:grant_type]
+    when "authorization_code"
+      authorization = client_application.authorizations.find_by(:code => params[:code])
+      access_token = authorization.access_tokens.create!
+    when "refresh_token"
+      access_token =
+        client_application.access_tokens.find_by(:refresh_token => params[:refresh_token])
+      authorization = access_token.authorization
+      access_token = authorization.access_tokens.create!
+    end
 
-    render :json => access_token
+    if access_token
+      render :json => access_token
+    else
+      head 400
+    end
   end
 
   private
