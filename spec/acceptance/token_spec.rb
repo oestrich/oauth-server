@@ -8,12 +8,12 @@ resource "Tokens" do
 
     parameter :grant_type, "Type of grant requested, must be one of: authorization_code"
     parameter :code, "Authorization code"
-    parameter :redirect_url, "Redirect url used to obtain authorization code"
+    parameter :redirect_uri, "Redirect url used to obtain authorization code"
 
     let!(:client_application) do
       ClientApplication.create({
         :name => "Test Application",
-        :redirect_url => "http://www.example.com/",
+        :redirect_uri => "http://www.example.com/",
       })
     end
 
@@ -24,18 +24,19 @@ resource "Tokens" do
     let(:authorization) do
       user.authorizations.create({
         :client_application_id => client_application.id,
-        :scopes => ["orders"],
-        :redirect_url => redirect_url,
+        :scopes => ["self"],
+        :redirect_uri => redirect_uri,
       })
     end
 
     let(:authorization_header) do
-      "Basic #{Base64.strict_encode64("#{client_application.client_id}:")}"
+      secret = "#{client_application.client_id}:#{client_application.client_secret}"
+      "Basic #{Base64.strict_encode64(secret)}"
     end
 
     let(:grant_type) { "authorization_code" }
     let(:code) { authorization.code }
-    let(:redirect_url) { client_application.redirect_url }
+    let(:redirect_uri) { client_application.redirect_uri }
 
     example_request "Turning an authorization code into an access token" do
       expect(status).to eq(200)

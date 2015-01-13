@@ -4,7 +4,7 @@ describe "OAuth", :type => :feature do
   let!(:client_application) do
     ClientApplication.create({
       :name => "Test Application",
-      :redirect_url => "http://www.example.com/",
+      :redirect_uri => "http://www.example.com/",
     })
   end
 
@@ -18,9 +18,9 @@ describe "OAuth", :type => :feature do
     visit oauth_authorize_path({
       :client_id => client_application.client_id,
       :request_type => "code",
-      :scope => "orders",
+      :scope => "self",
       :state => state,
-      :redirect_url => client_application.redirect_url,
+      :redirect_uri => client_application.redirect_uri,
     })
 
     fill_in "Email", :with => user.email
@@ -28,7 +28,7 @@ describe "OAuth", :type => :feature do
     click_on "Sign In"
 
     expect(page).to have_content("Allow Test Application")
-    expect(page).to have_content("View orders")
+    expect(page).to have_content("View self")
 
     click_on "Authorize"
 

@@ -2,11 +2,13 @@ class OauthController < ApplicationController
   before_filter :require_user, :only => :authorize
   before_filter :require_client_application
 
+  protect_from_forgery :except => [:token]
+
   def authorize
     @authorization = current_user.authorizations.create({
       :client_application_id => client_application.id,
       :scopes => scopes,
-      :redirect_url => params[:redirect_url],
+      :redirect_uri => params[:redirect_uri],
       :state => params[:state],
     })
   end
@@ -33,8 +35,9 @@ class OauthController < ApplicationController
       @client_application ||= ClientApplication.find_by(:client_id => params[:client_id])
     elsif request.headers["Authorization"].present?
       auth_header = request.headers["Authorization"].gsub("Basic ", "")
-      client_id, _ = Base64.strict_decode64(auth_header).split(":")
-      @client_application ||= ClientApplication.find_by(:client_id => client_id)
+      client_id, client_secret = Base64.strict_decode64(auth_header).split(":")
+      @client_application ||=
+        ClientApplication.find_by(:client_id => client_id, :client_secret => client_secret)
     end
   end
   helper_method :client_application

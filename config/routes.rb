@@ -8,5 +8,11 @@ Rails.application.routes.draw do
 
   resources :sessions, :only => [:new, :create]
 
+  resources :users, :only => [] do
+    collection do
+      get :me, :format => false
+    end
+  end
+
   root :to => "home#index"
 end

@@ -4,7 +4,7 @@ class CreateTables < ActiveRecord::Migration
 
     create_table :client_applications, :id => :uuid do |t|
       t.string :name
-      t.text :redirect_url, :null => false
+      t.text :redirect_uri, :null => false
       t.uuid :client_id, :null => false
       t.uuid :client_secret, :null => false
 
@@ -15,7 +15,7 @@ class CreateTables < ActiveRecord::Migration
       t.uuid :client_application_id
       t.uuid :user_id
       t.text :state
-      t.text :redirect_url, :null => false
+      t.text :redirect_uri, :null => false
       t.text :scopes, :array => true
       t.uuid :code, :null => false
 
