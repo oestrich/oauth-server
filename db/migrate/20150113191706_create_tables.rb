@@ -29,7 +29,7 @@ class CreateTables < ActiveRecord::Migration
       t.boolean :active, :null => false
       t.integer :expires_in, :null => false
 
-      t.timestamp
+      t.timestamps
     end
 
     create_table :users, :id => :uuid do |t|

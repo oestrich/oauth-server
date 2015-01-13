@@ -3,6 +3,12 @@ class HomeController < ApplicationController
 
   def index
     response = client.get("/users/me")
+
+    if response.status == 401
+      redirect_to "/auth/homemade"
+      return
+    end
+
     json = JSON.parse(response.body)
     render :text => "Welcome #{json["email"]}"
   end

@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def require_access_token!
-    unless access_token
+    unless access_token && access_token.valid_token?
       head 401
     end
   end

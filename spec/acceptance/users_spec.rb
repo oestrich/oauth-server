@@ -38,5 +38,27 @@ resource "Users" do
         :email => "eric@example.com",
       }.to_json)
     end
+
+    context "token expired" do
+      before do
+        access_token.created_at = 2.hours.ago
+        access_token.save
+      end
+
+      example_request "Out of date token" do
+        expect(status).to eq(401)
+      end
+    end
+
+    context "token no longer active" do
+      before do
+        access_token.active = false
+        access_token.save
+      end
+
+      example_request "Out of date token" do
+        expect(status).to eq(401)
+      end
+    end
   end
 end

@@ -18,11 +18,13 @@ ActiveRecord::Schema.define(version: 20150113191706) do
   enable_extension "uuid-ossp"
 
   create_table "access_tokens", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.uuid    "authorization_id"
-    t.uuid    "access_token",     null: false
-    t.uuid    "refresh_token",    null: false
-    t.boolean "active",           null: false
-    t.integer "expires_in",       null: false
+    t.uuid     "authorization_id"
+    t.uuid     "access_token",     null: false
+    t.uuid     "refresh_token",    null: false
+    t.boolean  "active",           null: false
+    t.integer  "expires_in",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "authorizations", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|

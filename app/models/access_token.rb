@@ -6,7 +6,11 @@ class AccessToken < ActiveRecord::Base
   after_initialize do
     self[:access_token] ||= SecureRandom.uuid
     self[:refresh_token] ||= SecureRandom.uuid
-    self[:active] = false if self[:active].nil?
+    self[:active] = true if self[:active].nil?
     self[:expires_in] ||= 3600.seconds
+  end
+
+  def valid_token?
+    active && created_at > 1.hours.ago
   end
 end
