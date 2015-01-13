@@ -24,15 +24,31 @@ describe Authorization do
     })
   end
 
-  specify "setting the correct redirect_uri with extras" do
-    expect(authorization.full_redirect_uri).
-      to eq("http://example.com/auth/callback?code=#{authorization.code}&state=#{state}")
+  context "full_redirect_uri" do
+    specify "setting the correct redirect_uri with extras" do
+      expect(authorization.full_redirect_uri).
+        to eq("http://example.com/auth/callback?code=#{authorization.code}&state=#{state}")
+    end
+
+    specify "handling extra query params in the redirect url" do
+      authorization.redirect_uri = "http://example.com/auth/callback?others=true"
+
+      expect(authorization.full_redirect_uri).
+        to eq("http://example.com/auth/callback?code=#{authorization.code}&others%5B%5D=true&state=#{state}")
+    end
   end
 
-  specify "handling extra query params in the redirect url" do
-    authorization.redirect_uri = "http://example.com/auth/callback?others=true"
+  context "deny_redirect_uri" do
+    specify "setting the correct redirect_uri with extras" do
+      expect(authorization.deny_redirect_uri).
+        to eq("http://example.com/auth/callback?error=access_denied&state=#{state}")
+    end
 
-    expect(authorization.full_redirect_uri).
-      to eq("http://example.com/auth/callback?code=#{authorization.code}&others%5B%5D=true&state=#{state}")
+    specify "handling extra query params in the redirect url" do
+      authorization.redirect_uri = "http://example.com/auth/callback?others=true"
+
+      expect(authorization.deny_redirect_uri).
+        to eq("http://example.com/auth/callback?error=access_denied&others%5B%5D=true&state=#{state}")
+    end
   end
 end

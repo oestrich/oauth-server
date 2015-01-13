@@ -7,3 +7,6 @@
 
 = form_for authorization do |f|
   = f.submit "Authorize"
+
+= form_for authorization, :url => authorization_url(authorization, :deny => true) do |f|
+  = f.submit "Deny"

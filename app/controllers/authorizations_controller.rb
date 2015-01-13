@@ -3,6 +3,11 @@ class AuthorizationsController < ApplicationController
 
   def update
     authorization = current_user.authorizations.find(params[:id])
-    redirect_to authorization.full_redirect_uri
+
+    if params[:deny]
+      redirect_to authorization.deny_redirect_uri
+    else
+      redirect_to authorization.full_redirect_uri
+    end
   end
 end

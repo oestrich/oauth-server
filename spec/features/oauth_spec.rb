@@ -35,4 +35,25 @@ describe "OAuth", :type => :feature do
     expect(current_url).to match(/state=#{state}/)
     expect(current_url).to match(/code=/)
   end
+
+  example "Cancelling an OAuth request" do
+    visit oauth_authorize_path({
+      :client_id => client_application.client_id,
+      :request_type => "code",
+      :scope => "self",
+      :state => state,
+      :redirect_uri => client_application.redirect_uri,
+    })
+
+    fill_in "Email", :with => user.email
+    fill_in "Password", :with => "password"
+    click_on "Sign In"
+
+    expect(page).to have_content("Allow Test Application")
+    expect(page).to have_content("View self")
+
+    click_on "Deny"
+
+    expect(current_url).to match(/error=access_denied/)
+  end
 end
