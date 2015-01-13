@@ -1,0 +1,10 @@
+= form_for User.new, :url => sessions_path do |f|
+  = hidden_field_tag :redirect_url, params[:redirect_url]
+
+  = f.label :email
+  = f.text_field :email
+
+  = f.label :password
+  = f.password_field :password
+
+  = f.submit "Sign In"

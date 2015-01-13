@@ -1,0 +1,9 @@
+%h2 Allow #{client_application.name} to view your data?
+
+%h3 Scopes requested:
+%ul
+  - authorization.scopes.each do |scope|
+    %li View #{scope}
+
+= form_for authorization do |f|
+  = f.submit "Authorize"
