@@ -10,7 +10,7 @@ class HomeController < ApplicationController
     end
 
     json = JSON.parse(response.body)
-    render :text => "Welcome #{json["email"]}"
+    @email = json["email"]
   end
 
   private

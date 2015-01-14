@@ -35,9 +35,9 @@ class OauthTokensController < ApplicationController
     elsif params.has_key?(:client_id) && params.has_key?(:client_secret)
       @client_application ||=
         ClientApplication.find_by({
-        :client_id => params[:client_id],
-        :client_secret => params[:client_secret],
-      })
+          :client_id => params[:client_id],
+          :client_secret => params[:client_secret],
+        })
     end
   end
   helper_method :client_application
