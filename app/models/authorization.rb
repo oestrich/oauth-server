@@ -9,6 +9,14 @@ class Authorization < ActiveRecord::Base
     self[:active] = true if self[:active].nil?
   end
 
+  def self.find_active_authorization(client_application_id, redirect_uri, scopes)
+    where({
+      :client_application_id => client_application_id,
+      :redirect_uri => redirect_uri,
+      :active => true,
+    }).where("scopes = ARRAY[?]", scopes.join(",")).first
+  end
+
   def deactivate!
     update(:active => false)
   end

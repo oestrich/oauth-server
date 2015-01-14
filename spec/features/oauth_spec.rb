@@ -36,6 +36,24 @@ describe "OAuth", :type => :feature do
     expect(current_url).to match(/code=/)
   end
 
+  context "active authorization" do
+    include_context :logged_in
+    include_context :access_token
+
+    example "Skipping the approve step if an active authorization exists" do
+      visit oauth_authorize_path({
+        :client_id => client_application.client_id,
+        :request_type => "code",
+        :scope => "self",
+        :state => state,
+        :redirect_uri => client_application.redirect_uri,
+      })
+
+      expect(current_url).to match(/state=#{state}/)
+      expect(current_url).to match(/code=/)
+    end
+  end
+
   example "Cancelling an OAuth request" do
     visit oauth_authorize_path({
       :client_id => client_application.client_id,
