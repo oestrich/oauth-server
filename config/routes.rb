@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   resources :authorizations, :only => :update
 
+  resources :connected_applications, :only => [:index, :destroy]
+
   resources :sessions, :only => [:new, :create]
 
   resources :users, :only => [] do

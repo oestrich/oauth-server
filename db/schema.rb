@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20150113191706) do
     t.text     "redirect_uri",          null: false
     t.text     "scopes",                             array: true
     t.uuid     "code",                  null: false
+    t.boolean  "active",                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe AccessToken do
-  subject do
-    AccessToken.new
-  end
+  let(:authorization) { Authorization.new }
+
+  subject { authorization.access_tokens.new }
 
   context "valid_token?" do
     specify "token is valid" do
@@ -18,6 +18,12 @@ describe AccessToken do
 
     specify "token no longer active" do
       subject.active = false
+      expect(subject).to_not be_valid_token
+    end
+
+    specify "authorization no longer active" do
+      authorization.active = false
+      subject.created_at = Time.now
       expect(subject).to_not be_valid_token
     end
   end

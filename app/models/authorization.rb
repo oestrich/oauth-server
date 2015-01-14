@@ -6,6 +6,15 @@ class Authorization < ActiveRecord::Base
 
   after_initialize do
     self[:code] ||= SecureRandom.uuid
+    self[:active] = true if self[:active].nil?
+  end
+
+  def deactivate!
+    update(:active => false)
+  end
+
+  def inactive?
+    active == false
   end
 
   def deny_redirect_uri

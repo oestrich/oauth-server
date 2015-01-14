@@ -1,0 +1,6 @@
+%h1 Connected Applications
+%ul.applications
+  - connected_applications.each do |application|
+    %li.application
+      = application.name
+      = link_to "Remove", connected_application_path(application), :data => { :method => :delete }

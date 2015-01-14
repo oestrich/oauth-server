@@ -11,6 +11,6 @@ class AccessToken < ActiveRecord::Base
   end
 
   def valid_token?
-    active && created_at > 1.hours.ago
+    authorization.active? && active? && created_at > 1.hours.ago
   end
 end

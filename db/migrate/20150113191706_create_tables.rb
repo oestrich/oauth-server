@@ -18,6 +18,7 @@ class CreateTables < ActiveRecord::Migration
       t.text :redirect_uri, :null => false
       t.text :scopes, :array => true
       t.uuid :code, :null => false
+      t.boolean :active, :null => false
 
       t.timestamps
     end

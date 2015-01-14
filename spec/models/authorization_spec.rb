@@ -51,4 +51,9 @@ describe Authorization do
         to eq("http://example.com/auth/callback?error=access_denied&others%5B%5D=true&state=#{state}")
     end
   end
+
+  specify "deactivating an authorization" do
+    authorization.deactivate!
+    expect(authorization).to be_inactive
+  end
 end
