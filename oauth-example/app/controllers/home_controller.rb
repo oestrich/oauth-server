@@ -1,25 +1,16 @@
 class HomeController < ApplicationController
-  before_filter :require_token
-
   def index
+    return unless session[:access_token]
+
     response = client.get("/users/me")
 
-    if response.status == 401
-      redirect_to "/auth/homemade"
-      return
+    if response.success?
+      json = JSON.parse(response.body)
+      @email = json["email"]
     end
-
-    json = JSON.parse(response.body)
-    @email = json["email"]
   end
 
   private
-
-  def require_token
-    unless session[:access_token]
-      redirect_to "/auth/homemade"
-    end
-  end
 
   def client
     @client ||= Faraday.new("http://localhost:5000") do |conn|
