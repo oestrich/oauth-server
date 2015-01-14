@@ -46,6 +46,7 @@ resource "Tokens" do
         expect(response_headers["Pragma"]).to eq("no-cache")
 
         expect(response_body).to be_json_eql({
+          :token_type => "bearer",
           :expires_in => 3600,
         }.to_json).excluding("access_token", "refresh_token")
         expect(response_body).to have_json_path("access_token")
@@ -69,6 +70,7 @@ resource "Tokens" do
         expect(response_headers["Pragma"]).to eq("no-cache")
 
         expect(response_body).to be_json_eql({
+          :token_type => "bearer",
           :expires_in => 3600,
         }.to_json).excluding("access_token", "refresh_token")
         expect(response_body).to have_json_path("access_token")
